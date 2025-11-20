@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist PAS/UEM 2025 - Etapa 2</title>
+    <style>
+        :root {
+            --color-primary: #0D469D;
+            --color-secondary: #6D8A49;
+            --color-accent: #CE75C2;
+            --color-light: #E8C7BB;
+            --color-medium: #DB907D;
+            --color-dark: #022660;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--color-dark), var(--color-primary));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .subject-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--color-primary);
+        }
+        
+        .subject-section:nth-child(odd) {
+            border-left-color: var(--color-secondary);
+        }
+        
+        .subject-section:nth-child(even) {
+            border-left-color: var(--color-accent);
+        }
+        
+        h2 {
+            color: var(--color-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--color-dark);
+        }
+        
+        .progress-bar {
+            width: 120px;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--color-secondary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .checklist {
+            list-style-type: none;
+        }
+        
+        .checklist-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .checklist-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+            accent-color: var(--color-secondary);
+        }
+        
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .checklist-item.completed {
+            background-color: rgba(109, 138, 73, 0.1);
+            text-decoration: line-through;
+            color: #666;
+        }
+        
+        .checklist-item.completed label {
+            text-decoration: line-through;
+        }
+        
+        .sub-checklist {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+        
+        .sub-checklist .checklist-item {
+            background-color: #f5f5f5;
+            padding: 8px 12px;
+            font-size: 0.95rem;
+        }
+        
+        .summary {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-top: 3px solid var(--color-medium);
+        }
+        
+        .summary h3 {
+            color: var(--color-dark);
+            margin-bottom: 15px;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat {
+            padding: 15px;
+            border-radius: 8px;
+            min-width: 150px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat.total {
+            background-color: rgba(2, 38, 96, 0.1);
+            border: 1px solid var(--color-dark);
+        }
+        
+        .stat.completed {
+            background-color: rgba(109, 138, 73, 0.1);
+            border: 1px solid var(--color-secondary);
+        }
+        
+        .stat.remaining {
+            background-color: rgba(206, 117, 194, 0.1);
+            border: 1px solid var(--color-accent);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subject-section {
+                padding: 15px;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Checklist PAS/UEM 2025</h1>
+            <p class="subtitle">Etapa 2 - Conteúdos Programáticos</p>
+        </header>
+        
+        <div id="checklist-container">
+            <!-- Conteúdo será gerado dinamicamente via JavaScript -->
+        </div>
+        
+        <div class="summary">
+            <h3>Resumo do Progresso</h3>
+            <div class="summary-stats">
+                <div class="stat total">
+                    <div class="stat-value" id="total-items">0</div>
+                    <div class="stat-label">Total de Itens</div>
+                </div>
+                <div class="stat completed">
+                    <div class="stat-value" id="completed-items">0</div>
+                    <div class="stat-label">Concluídos</div>
+                </div>
+                <div class="stat remaining">
+                    <div class="stat-value" id="remaining-items">0</div>
+                    <div class="stat-label">Pendentes</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Checklist baseado no conteúdo programático do PAS/UEM 2025 - Etapa 2</p>
+            <p>Paleta de cores: Dawn or Dusk</p>
+        </footer>
+    </div>
+
+    <script>
+        // Dados do conteúdo programático
+        const subjects = [
+            {
+                name: "REDAÇÃO",
+                items: [
+                    "Carta de solicitação",
+                    "Comentário crítico de postagens",
+                    "Resposta argumentativa",
+                    "Artigo de opinião"
+                ]
+            },
+            {
+                name: "LÍNGUA PORTUGUESA",
+                items: [
+                    "Compreensão e interpretação de textos",
+                    "Condições de produção, estrutura composicional e marcas de estilo de diferentes gêneros do discurso",
+                    {
+                        name: "Variação linguística e a norma padrão em fenômenos morfossintáticos do Português brasileiro",
+                        subitems: [
+                            "Regência nominal e verbal",
+                            "Concordância nominal e verbal",
+                            "Sintaxe de colocação pronominal"
+                        ]
+                    },
+                    "Uso das palavras e a produção de sentido no texto: Estrutura, formação e funcionamento",
+                    "Período composto e produção do sentido",
+                    "Organizadores textuais, operadores discursivos e/ou conectivos relevantes para a coesão",
+                    "Relações de sentido entre os elementos no texto: sinonímia, antonímia, paronímia, polissemia, denotação, conotação",
+                    "Vozes sociais nos gêneros do discurso",
+                    "Discurso oral: aspectos sinestésicos e adequação da fala a diferentes contextos",
+                    "Modalizadores do discurso e seus efeitos de sentido"
+                ]
+            },
+            {
+                name: "LITERATURAS EM LÍNGUA PORTUGUESA",
+                items: [
+                    {
+                        name: "Literatura brasileira - Textos poéticos",
+                        subitems: [
+                            "Gonçalves Dias - Poemas selecionados",
+                            "Álvares de Azevedo - Poemas selecionados",
+                            "Castro Alves - Poemas selecionados",
+                            "Olavo Bilac - Poemas selecionados",
+                            "Cruz e Sousa - Poemas selecionados",
+                            "Augusto dos Anjos - Poemas selecionados"
+                        ]
+                    },
+                    {
+                        name: "Literatura brasileira - Textos narrativos",
+                        subitems: [
+                            "Machado de Assis - Contos selecionados",
+                            "Lima Barreto - Contos selecionados"
+                        ]
+                    },
+                    "Literatura portuguesa - Antero de Quental - Poemas selecionados",
+                    "Literatura brasileira contemporânea - Jariá Arraes - Cordéis selecionados",
+                    "Literatura africana de língua portuguesa - Mia Couto - Contos selecionados"
+                ]
+            },
+            {
+                name: "LÍNGUA INGLESA",
+                items: [
+                    {
+                        name: "Gêneros textuais das seguintes esferas sociais de circulação",
+                        subitems: [
+                            "Literária/artística",
+                            "Científica",
+                            "Escolar",
+                            "Publicitária"
+                        ]
+                    },
+                    {
+                        name: "Habilidades de leitura",
+                        subitems: [
+                            "Apontar a ideia principal de um texto",
+                            "Interpretar detalhes de um texto",
+                            "Fazer inferências lógicas",
+                            "Compreender a organização textual",
+                            "Interpretar texto verbal e não verbal",
+                            "Realizar análise da língua em uso"
+                        ]
+                    },
+                    {
+                        name: "Itens linguístico-discursivos",
+                        subitems: [
+                            "Phrasal verbs",
+                            "Genitive Case",
+                            "Present Perfect",
+                            "Past Perfect",
+                            "Comparatives",
+                            "Adjectives",
+                            "Adverbs",
+                            "Conjunctions",
+                            "Emphasizers",
+                            "Modal Verbs",
+                            "Reflexive Pronouns",
+                            "Relative Pronouns",
+                            "Indefinite Pronouns",
+                            "Prepositions",
+                            "Conditional Sentences (1st / 2nd types)"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "ARTE",
+                items: [
+                    {
+                        name: "Música",
+                        subitems: [
+                            "A voz cantada",
+                            "Música corporal",
+                            "Orquestra",
+                            "Música ocidental do período moderno e do período romântico",
+                            "Gêneros musicais: Música Popular Brasileira e Música sertaneja",
+                            "Música Popular Brasileira"
+                        ]
+                    },
+                    {
+                        name: "Artes Visuais",
+                        subitems: [
+                            "Neoclassicismo na Europa e no Brasil",
+                            "Renascimento na Itália",
+                            "Barroco na Europa e no Brasil"
+                        ]
+                    },
+                    {
+                        name: "Artes Cênicas",
+                        subitems: [
+                            "Teatro Medieval e Renascentista",
+                            "Teatro Religioso",
+                            "Commedia dell'arte",
+                            "Teatro Elisabetano (Shakespeare)"
+                        ]
+                    },
+                    {
+                        name: "Dança",
+                        subitems: [
+                            "O corpo na dança",
+                            "Dança Moderna",
+                            "Danças folclóricas"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "EDUCAÇÃO FÍSICA",
+                items: [
+                    {
+                        name: "Jogos e Brincadeiras",
+                        subitems: [
+                            "Aspectos competitivos e cooperativos nas relações humanas",
+                            "Jogos populares versus jogos eletrônicos, ressignificando saberes"
+                        ]
+                    },
+                    {
+                        name: "Esporte",
+                        subitems: [
+                            "Esporte Plural",
+                            "Educação inclusiva, esportes adaptados e o papel da Educação Física na inclusão educacional de alunos com deficiência"
+                        ]
+                    },
+                    {
+                        name: "Ginástica",
+                        subitems: [
+                            "Ginástica de condicionamento físico",
+                            "Atividade física, exercício, qualidade de vida, ginástica de condicionamento físico: conceitos aplicados à saúde",
+                            "Os aspectos básicos que envolvem a promoção da saúde e a prevenção de doenças crônico-degenerativas"
+                        ]
+                    },
+                    {
+                        name: "Danças",
+                        subitems: [
+                            "Danças de rua",
+                            "Efeitos e influências da música e seus ritmos sobre os seres humanos"
+                        ]
+                    },
+                    {
+                        name: "Lutas",
+                        subitems: [
+                            "Lutas e suas subdivisões (conceitos e características)"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "FILOSOFIA",
+                items: [
+                    {
+                        name: "Ética",
+                        subitems: [
+                            "Ética da virtude: a questão sobre o que é moralmente correto e como podemos viver da melhor forma",
+                            "Deontologia: deveres morais normativos determinar o que é moralmente correto",
+                            "Utilitarismo: o que é moralmente correto é aquilo que produz o melhor equilíbrio entre prazer e sofrimento quando todos são considerados igualmente",
+                            "Direitos humanos, bioética e ética ambiental"
+                        ]
+                    },
+                    {
+                        name: "Filosofia política",
+                        subitems: [
+                            "Estado e sociedade civil. A questão da soberania e dos direitos e obrigações dos cidadãos. Cidadania e responsabilidade social. Liberalismo, socialismo, contratualismo",
+                            "Justiça distributiva"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "GEOGRAFIA",
+                items: [
+                    {
+                        name: "GEOGRAFIA DO BRASIL",
+                        subitems: [
+                            "As bases físicas do Brasil",
+                            "Formação, localização, exploração e utilização dos recursos naturais",
+                            "Industrialização e organização do espaço",
+                            "A dinâmica do espaço rural",
+                            "A urbanização na sociedade capitalista",
+                            "O espaço em rede",
+                            "A evolução demográfica, a distribuição espacial da população e os indicadores estatísticos",
+                            "As manifestações socioespaciais da diversidade cultural",
+                            "Regionalização do Brasil",
+                            "Aspectos geográficos do Paraná no contexto nacional e internacional"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "HISTÓRIA",
+                items: [
+                    {
+                        name: "História Moderna e Contemporânea",
+                        subitems: [
+                            "O Renascimento, a reforma religiosa e a revolução científica",
+                            "A colonização nas Américas e o Mercantilismo",
+                            "As sociedades indígenas e o impacto das invasões conquistadoras",
+                            "As revoluções burguesas na Inglaterra e na França",
+                            "A Revolução Industrial e o desenvolvimento do capitalismo",
+                            "O liberalismo e o pensamento protecionista nos séculos XVIII e XIX",
+                            "A crise dos impérios coloniais e o processo de independência nas Américas",
+                            "Conservadorismo, nacionalismo e socialismo no século XIX",
+                            "Os Estados Unidos: formação socioeconômica, expansão territorial, guerra civil e industrialização"
+                        ]
+                    },
+                    "História do Brasil - O período imperial (1822-1889): economia, política, sociedade e cultura",
+                    "História do Paraná - O Paraná no século XIX: povos indígenas, europeus, africanos e seus descendentes, economia, cultura, política, conflitos sociais, relações de trabalho e movimentos populacionais"
+                ]
+            },
+            {
+                name: "SOCIOLOGIA",
+                items: [
+                    {
+                        name: "A constituição da sociologia e o estudo científico da sociedade",
+                        subitems: [
+                            "A constituição das sociedades modernas e o contexto histórico do surgimento da sociologia",
+                            "Teorias sociológicas clássicas: Marx, Weber e Durkheim",
+                            "Teorias contemporâneas da sociologia",
+                            "Princípios teóricos e metodológicos da investigação sociológica"
+                        ]
+                    },
+                    {
+                        name: "Definições básicas sobre cultura",
+                        subitems: [
+                            "O método etnográfico e o saber antropológico",
+                            "Diversidade cultural e Etnocentrismo",
+                            "Cultura brasileira e suas matrizes étnicas e culturais"
+                        ]
+                    },
+                    {
+                        name: "O mundo do trabalho",
+                        subitems: [
+                            "A organização do trabalho humano em diversas formas de vida social",
+                            "A constituição histórica e a organização do trabalho nas sociedades capitalistas",
+                            "Trabalho, novas tecnologias e globalização"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "MATEMÁTICA",
+                items: [
+                    {
+                        name: "Análise Combinatória, Probabilidades",
+                        subitems: [
+                            "Problemas de contagem",
+                            "Princípio multiplicativo e princípio aditivo",
+                            "Fatorial, Arranjo, Combinação e Permutação",
+                            "Conceito de probabilidade e de espaços amostrais; resultados igualmente prováveis",
+                            "Probabilidade da união e da intersecção de dois eventos em espaços amostrais finitos"
+                        ]
+                    },
+                    {
+                        name: "Geometria Plana",
+                        subitems: [
+                            "Congruência de triângulos",
+                            "Semelhança de triângulos",
+                            "Relações métricas no triângulo retângulo",
+                            "Relações trigonométricas no triângulo retângulo",
+                            "Lei dos Senos e Lei dos Cossenos",
+                            "Área de triângulo e de quadriláteros notáveis",
+                            "Área de polígonos regulares"
+                        ]
+                    },
+                    {
+                        name: "Funções",
+                        subitems: [
+                            "Relação de dependência entre duas variáveis com valores no conjunto dos reais, funções reais",
+                            "Funções polinomiais do 1º grau: propriedades, coeficientes, sinal, raízes, gráfico, função inversa",
+                            "Funções polinomiais do 2º grau: propriedades, coeficientes, sinal, raízes, gráfico, máximo e mínimo"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "BIOLOGIA",
+                items: [
+                    {
+                        name: "BIOLOGIA DOS ORGANISMOS",
+                        subitems: [
+                            "Diversidade dos seres vivos: regras de nomenclatura, classificação e sistemática filogenética",
+                            "Caracterização dos vírus",
+                            "Caracterização dos reinos: Monera, Protista, Fungi, Plantae e Animália",
+                            "Morfologia e fisiologia animal dos poríferos, cnidários, platelmintos, nematelmintos, moluscos, anelideos, artrópodes, equinodermos, protocordados e vertebrados",
+                            "Morfologia, sistemática e fisiologia vegetal",
+                            "Ciência e saúde relacionados aos itens anteriores"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "FÍSICA",
+                items: [
+                    {
+                        name: "Hidrostática e hidrodinâmica",
+                        subitems: [
+                            "Densidade e massa específica",
+                            "Pressão, Lei de Stevin e princípio de Pascal",
+                            "Empuxo e princípio de Arquimedes",
+                            "Vazão e equação da continuidade",
+                            "Equação de Bernoulli"
+                        ]
+                    },
+                    {
+                        name: "Termologia",
+                        subitems: [
+                            "Temperatura e Lei Zero da Termodinâmica",
+                            "Escalas termométricas",
+                            "Dilatação térmica de sólidos e de líquidos",
+                            "Gases ideais e equação de Clapeyron",
+                            "Noções de teoria cinética dos gases",
+                            "Calor e equilíbrio térmico",
+                            "Capacidade térmica e calor específico de sólidos e de líquidos",
+                            "Calor latente de transição de fases",
+                            "Processos de transferência de calor",
+                            "Condutores e isolantes térmicos",
+                            "Calor, trabalho e equivalente mecânico do calor",
+                            "Energia interna e Primeira Lei da Termodinâmica",
+                            "Máquinas térmicas e ciclo de Carnot",
+                            "Entropia e Segunda Lei da Termodinâmica"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "QUÍMICA",
+                items: [
+                    {
+                        name: "Cinética",
+                        subitems: [
+                            "Compreensão da importância do controle da velocidade de reações químicas em situações cotidianas",
+                            "A Teoria das colisões (aspectos qualitativos)",
+                            "Fatores que afetam a velocidade de reações",
+                            "Lei cinética das reações",
+                            "A Energia de ativação, os catalisadores",
+                            "A representação gráfica dos processos cinéticos"
+                        ]
+                    },
+                    {
+                        name: "Equilíbrio Químico",
+                        subitems: [
+                            "Conceitos de Equilíbrio Químico",
+                            "Constante de Equilíbrio",
+                            "Princípio de Le Chatelier - Condições e variáveis que afetam o equilíbrio de uma reação",
+                            "Equilíbrios em solução envolvendo ácidos e bases",
+                            "Produto iônico da água (pH e pOH)"
+                        ]
+                    },
+                    {
+                        name: "Termoquímica",
+                        subitems: [
+                            "Princípio da conservação da energia. Energia de ligação",
+                            "Reações exotérmicas e endotérmicas: calor envolvido nas transformações químicas e suas representações gráficas",
+                            "Entalpia envolvida nas diferentes transformações",
+                            "Compreensão dos conceitos de termoquímica em contextos cotidianos"
+                        ]
+                    },
+                    {
+                        name: "Eletroquímica",
+                        subitems: [
+                            "Reatividade de metais",
+                            "Conceito de número de oxidação, reações de oxidação e redução",
+                            "Condutividade elétrica de soluções",
+                            "Tipos de pilhas e baterias",
+                            "Compreensão do funcionamento das pilhas",
+                            "Cálculo de ddp de pilhas",
+                            "Noções sobre eletrólise",
+                            "Aplicações das pilhas e eletrólise no cotidiano"
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Função para criar elementos HTML para um item
+        function createChecklistItem(item, parentId, isSubitem = false) {
+            if (typeof item === 'string') {
+                const itemId = `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                const li = document.createElement('li');
+                li.className = `checklist-item ${isSubitem ? 'sub-item' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" id="${itemId}" data-item="${item}">
+                    <label for="${itemId}">${item}</label>
+                `;
+                
+                document.getElementById(parentId).appendChild(li);
+                
+                // Adicionar evento para atualizar o progresso
+                li.querySelector('input').addEventListener('change', updateProgress);
+                
+                return 1; // Conta 1 item
+            } else if (typeof item === 'object' && item.name) {
+                // Item com subitens
+                const itemId = `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                const li = document.createElement('li');
+                li.className = `checklist-item ${isSubitem ? 'sub-item' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" id="${itemId}" data-item="${item.name}">
+                    <label for="${itemId}">${item.name}</label>
+                `;
+                
+                document.getElementById(parentId).appendChild(li);
+                
+                // Adicionar evento para atualizar o progresso
+                li.querySelector('input').addEventListener('change', updateProgress);
+                
+                let count = 1; // Conta o item principal
+                
+                // Adicionar subitens
+                if (item.subitems && item.subitems.length > 0) {
+                    const subUl = document.createElement('ul');
+                    subUl.className = 'sub-checklist';
+                    li.appendChild(subUl);
+                    
+                    const subUlId = `sub-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                    subUl.id = subUlId;
+                    
+                    item.subitems.forEach(subitem => {
+                        count += createChecklistItem(subitem, subUlId, true);
+                    });
+                }
+                
+                return count;
+            }
+            return 0;
+        }
+
+        // Função para criar a seção de uma disciplina
+        function createSubjectSection(subject) {
+            const section = document.createElement('div');
+            section.className = 'subject-section';
+            
+            const sectionId = `section-${subject.name.replace(/\s+/g, '-').toLowerCase()}`;
+            section.id = sectionId;
+            
+            section.innerHTML = `
+                <h2>
+                    ${subject.name}
+                    <div class="progress-container">
+                        <span class="progress-text">0%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </h2>
+                <ul class="checklist" id="checklist-${subject.name.replace(/\s+/g, '-').toLowerCase()}"></ul>
+            `;
+            
+            document.getElementById('checklist-container').appendChild(section);
+            
+            let itemCount = 0;
+            subject.items.forEach(item => {
+                itemCount += createChecklistItem(item, `checklist-${subject.name.replace(/\s+/g, '-').toLowerCase()}`);
+            });
+            
+            // Armazenar o número total de itens para esta disciplina
+            section.dataset.totalItems = itemCount;
+            section.dataset.completedItems = 0;
+            
+            return itemCount;
+        }
+
+        // Função para atualizar o progresso de uma disciplina
+        function updateSubjectProgress(subjectSection) {
+            const checklist = subjectSection.querySelector('.checklist');
+            const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
+            const completed = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+            const total = parseInt(subjectSection.dataset.totalItems);
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            subjectSection.dataset.completedItems = completed;
+            
+            const progressText = subjectSection.querySelector('.progress-text');
+            const progressFill = subjectSection.querySelector('.progress-fill');
+            
+            progressText.textContent = `${percentage}%`;
+            progressFill.style.width = `${percentage}%`;
+            
+            return { completed, total };
+        }
+
+        // Função para atualizar o progresso geral
+        function updateProgress() {
+            let totalItems = 0;
+            let completedItems = 0;
+            
+            const subjectSections = document.querySelectorAll('.subject-section');
+            subjectSections.forEach(section => {
+                const progress = updateSubjectProgress(section);
+                totalItems += progress.total;
+                completedItems += progress.completed;
+            });
+            
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('completed-items').textContent = completedItems;
+            document.getElementById('remaining-items').textContent = totalItems - completedItems;
+            
+            // Salvar o estado no localStorage
+            saveProgress();
+        }
+
+        // Função para salvar o progresso no localStorage
+        function saveProgress() {
+            const progress = {};
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            checkboxes.forEach(checkbox => {
+                progress[checkbox.dataset.item] = checkbox.checked;
+            });
+            
+            localStorage.setItem('pas-checklist-progress', JSON.stringify(progress));
+        }
+
+        // Função para carregar o progresso do localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('pas-checklist-progress');
+            
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                
+                checkboxes.forEach(checkbox => {
+                    if (progress.hasOwnProperty(checkbox.dataset.item)) {
+                        checkbox.checked = progress[checkbox.dataset.item];
+                    }
+                });
+            }
+        }
+
+        // Inicializar a checklist
+        function initChecklist() {
+            let totalItems = 0;
+            
+            subjects.forEach(subject => {
+                totalItems += createSubjectSection(subject);
+            });
+            
+            // Carregar o progresso salvo
+            loadProgress();
+            
+            // Atualizar o progresso inicial
+            updateProgress();
+            
+            // Atualizar o total de itens no resumo
+            document.getElementById('total-items').textContent = totalItems;
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', initChecklist);
+    </script>
+</body>
+</html>
